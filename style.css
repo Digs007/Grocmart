@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  
+}
+body {
+  box-sizing: border-box;
+  background-color: black;
+}
+.navbar {
+  font-family: sans-serif;
+}
+.navbar li a{
+  color: #787878;
+  padding: 15px 14px;
+  font-size: 20px;
+  letter-spacing: 1px;
+  line-height: 20px;
+  display: block;
+}
+.navbar-nav li a:hover {
+  color: blue !important;
+  background-color: rgba(0, 0, 0, .1) !important;
+  border-bottom: 5px solid orange;
+}
