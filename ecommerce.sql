@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2020 at 03:59 AM
+-- Generation Time: Dec 12, 2020 at 02:05 PM
 -- Server version: 10.1.32-MariaDB
 -- PHP Version: 5.6.36
 
@@ -67,7 +67,8 @@ INSERT INTO `customers` (`CustomerId`, `FirstName`, `LastName`, `PhoneNo`, `User
 (2, 'Digvijay', 'Bhirud', '09960779242', 'digubhirud@rediffmail.com4', '$2y$10$Qs.8PHJvOylW.BelfsmcFOC7V0VsAl6OrxlL6rYsfvidYihyA7ztu'),
 (3, 'Digvijay', 'Bhirud', '09960779242', 'digubhirud@rediffmail.com9', '$2y$10$L/0TcPvY5w4nFnW/9P1k6OECx/khDWJSsOPDK590BmBKY8ifSpHuW'),
 (4, 'dfs', 'sdff', '1111111111', 'digubhirud@rediffmail.com1', '$2y$10$Hk7HzPskYM9wX2Yc86GV2u12wPuOB6MCDeSY4NERAUS0kKQS6Ck.a'),
-(5, 'Digvijay', 'Bhirud', '09960779242', 'digubhirud@rediffmail.com10', '$2y$10$K15KqNEetf55uy5cqhPX9eet2NVRS05PpGL1UICPkDox2MBaiDqNK');
+(5, 'Digvijay', 'Bhirud', '09960779242', 'digubhirud@rediffmail.com10', '$2y$10$K15KqNEetf55uy5cqhPX9eet2NVRS05PpGL1UICPkDox2MBaiDqNK'),
+(6, 'Digvijay', 'Bhirud', '09960779242', 'digs007@g', '$2y$10$t3Opb3G2tnHx6tHntq32MO4PjjwVo0ePN.bx/.hFe6kI3eiobGEKi');
 
 -- --------------------------------------------------------
 
@@ -77,25 +78,24 @@ INSERT INTO `customers` (`CustomerId`, `FirstName`, `LastName`, `PhoneNo`, `User
 
 CREATE TABLE `orderdetail` (
   `Id` int(11) NOT NULL,
-  `OrderId` int(11) NOT NULL,
+  `CustomerId` int(11) NOT NULL,
   `ProductId` int(11) NOT NULL,
   `Quantity` int(11) NOT NULL,
   `Price` double(10,2) NOT NULL,
-  `Fullfilled` tinyint(1) NOT NULL
+  `Fullfilled` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `orders`
+-- Dumping data for table `orderdetail`
 --
 
-CREATE TABLE `orders` (
-  `OrderId` int(11) NOT NULL,
-  `ContactName` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `DeliveryAddress` varchar(256) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `CustomerId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `orderdetail` (`Id`, `CustomerId`, `ProductId`, `Quantity`, `Price`, `Fullfilled`) VALUES
+(1, 4, 2, 1, 37.00, 0),
+(2, 4, 1, 5, 16.00, 0),
+(3, 4, 3, 1, 270.00, 0),
+(4, 4, 8, 1, 84.47, 0),
+(5, 4, 3, 1, 270.00, 0),
+(6, 4, 2, 1, 37.00, 0);
 
 -- --------------------------------------------------------
 
@@ -149,12 +149,6 @@ ALTER TABLE `orderdetail`
   ADD PRIMARY KEY (`Id`);
 
 --
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`OrderId`);
-
---
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
@@ -174,19 +168,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `CustomerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `CustomerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `orderdetail`
 --
 ALTER TABLE `orderdetail`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `OrderId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product`

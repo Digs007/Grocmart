@@ -2,67 +2,8 @@
 // Include config file
 require_once "config.php";
 session_start();
-$hidden_name = $hidden_price = $quantity = "";
 if(!isset($_SESSION["Username"]))
-    echo "hi";
-if(isset($_POST["add_to_cart"]))
-{
-	if(isset($_SESSION["shopping_cart"]))
-	{
-		$item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
-		if(!in_array($_GET["id"], $item_array_id))
-		{
-		$count = count($_SESSION["shopping_cart"]);
-		$item_array = array(
-		'item_id'		=>	$_GET["id"],
-		'item_name'		=>	$_POST["hidden_name"],
-		'item_price'		=>	$_POST["hidden_price"],
-		'item_quantity'		=>	$_POST["quantity"]
-		);
-		$_SESSION["shopping_cart"][$count] = $item_array;
-		}
-		else
-		{
-      $count = count($_SESSION["shopping_cart"]);
-      for($i = 0; $i < $count; $i++)
-        if($_SESSION["shopping_cart"][$i]['item_id'] == $_GET["id"]){
-          $_SESSION["shopping_cart"][$i]['item_quantity'] = $_POST["quantity"];
-        }
-		}
-	}
-	else
-	{
-		$item_array = array(
-		'item_id'		=>	$_GET["id"],
-		'item_name'		=>	$_POST["hidden_name"],
-		'item_price'		=>	$_POST["hidden_price"],
-		'item_quantity'		=>	$_POST["quantity"]
-		);
-		$_SESSION["shopping_cart"][0] = $item_array;
-	}
-}
- 
-if(isset($_GET["action"]))
-{
-	if($_GET["action"] == "delete")
-	{
-		foreach($_SESSION["shopping_cart"] as $keys => $values)
-		{
-		if($values["item_id"] == $_GET["id"])
-		{
-    unset($_SESSION["shopping_cart"][$keys]);
-		echo '<script>alert("Item Removed")</script>';
-		echo '<script>window.location = "cart.php"</script>';
-		}
-		}
-  }
-  if($_GET["action"] == "clear"){
-    unset($_SESSION["shopping_cart"]);
-    unset($_SESSION["total"]);
-    echo '<script>alert("cart all items Removed")</script>';
-		echo '<script>window.location = "cart.php"</script>';
-  }
-}
+    echo '<script>window.location = "cart.php"</script>';
 
 ?>
 <!doctype html>
@@ -92,7 +33,7 @@ if(isset($_GET["action"]))
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-lg-auto justify-content-end">
         <li class="nav-item active">
-          <a class="nav-link" href="order.php">Orders</a>
+          <a class="nav-link" href="#">Orders</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="cart.php">My Cart</a>
@@ -107,57 +48,51 @@ if(isset($_GET["action"]))
   </nav>
   <!-- Header End -->
 
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-center">
     <h3>Order Details</h3>
-    <a href="cart.php?action=clear">
-      <button type="button" class="btn btn-danger">Clear all cart</button>
-    </a>
   </div>
   <div class="table-responsive">
     <table class="table table-bordered">
       <tr>
-        <th width="40%">Item Name</th>
+        <th width="30%">Item Name</th>
         <th width="10%">Quantity</th>
         <th width="20%">Price</th>
         <th width="15%">Total</th>
-        <th width="5%">Action</th>
+        <th width="15%">Fullfilled Staus</th>
       </tr>
-      <?php
-		if(!empty($_SESSION["shopping_cart"]))
-		{
-		$sum = 0;
-		foreach($_SESSION["shopping_cart"] as $keys => $values)
-		{
-		?>
-      <tr>
-        <td><?php echo $values["item_name"]; ?></td>
-        <td><?php echo $values["item_quantity"]; ?></td>
-        <td>$ <?php echo $values["item_price"]; ?></td>
-        <td>$ <?php echo number_format($values["item_quantity"] * $values["item_price"], 2);?></td>
-        <td><a href="cart.php?action=delete&id=<?php echo $values["item_id"]; ?>"><span
-              class="text-danger">Remove</span></a></td>
-      </tr>
-      <?php
-		$sum = $sum + ($values["item_quantity"] * $values["item_price"]);
-		}
-		?>
-      <tr>
-        <td colspan="3" align="right">Total</td>
-        <td align="right">$ <?php (float) $_SESSION["total"] = number_format($sum, 2);echo $_SESSION["total"]; ?></td>
-        <td></td>
-      </tr>
-      <?php
-    }
-		?>
+        <?php
+            $sql = "SELECT ProductId, Quantity, Price, Fullfilled FROM orderdetail";
+            $result = mysqli_query($link, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                // output data of each row
+                while($values = mysqli_fetch_assoc($result)) {
+                    $p = $values["ProductId"];
+                    $sql1 = "SELECT Name FROM product where ProductId = $p";
+                    $result1 = mysqli_query($link, $sql1);
+                    while($values1 = mysqli_fetch_assoc($result1)){
 
+        ?>
+        <tr>
+            <td><?php echo $values1["Name"]; ?></td>
+            <td><?php echo $values["Quantity"]; ?></td>
+            <td>$ <?php echo $values["Price"]; ?></td>
+            <td>$ <?php echo number_format($values["Quantity"] * $values["Price"], 2);?></td>
+            <td><span class="label label-success">
+              <?php 
+                if($values["Fullfilled"] == 1) echo "Delivered"; 
+                else echo "Yet to Arrive";
+              ?>
+                </span>
+            </td>
+        </tr>
+        <?php
+            }
+            }
+            } else {
+                echo"No Oreders";
+            }
+		?>
     </table>
-  </div>
-  <div class="d-flex justify-content-center">
-    <a href="checkout.php">
-      <span>
-        <button class="btn btn-success btn-lg " type="submit">Continue to checkout</button>
-      </span>
-    </a>
   </div>
   
 
