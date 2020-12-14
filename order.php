@@ -16,6 +16,7 @@ if(!isset($_SESSION["Username"]))
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="stylesheet" href="style.css" type="text/css">
+  
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
     integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -61,7 +62,8 @@ if(!isset($_SESSION["Username"]))
         <th width="15%">Fullfilled Staus</th>
       </tr>
         <?php
-            $sql = "SELECT ProductId, Quantity, Price, Fullfilled FROM orderdetail";
+            $a = $_SESSION["CustomerId"];
+            $sql = "SELECT ProductId, Quantity, Price, Fullfilled FROM orderdetail where CustomerId	= $a";
             $result = mysqli_query($link, $sql);
             if (mysqli_num_rows($result) > 0) {
                 // output data of each row

@@ -3,8 +3,11 @@
 require_once "config.php";
 session_start();
 $hidden_name = $hidden_price = $quantity = "";
-if(!isset($_SESSION["Username"]))
-    echo "hi";
+if(!isset($_SESSION["Username"])){
+  echo '<script>alert("Log in first")</script>';
+  echo '<script>window.location = "login.php"</script>';
+}
+    
 if(isset($_POST["add_to_cart"]))
 {
 	if(isset($_SESSION["shopping_cart"]))

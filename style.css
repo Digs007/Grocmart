@@ -12,10 +12,10 @@ body {
 }
 .navbar li a{
   color: #787878;
-  padding: 15px 14px;
+  padding: 5px 20px;
   font-size: 20px;
   letter-spacing: 1px;
-  line-height: 20px;
+  line-height: 10px;
   display: block;
 }
 .navbar-nav li a:hover {
